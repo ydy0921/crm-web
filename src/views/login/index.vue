@@ -1,7 +1,9 @@
 <template>
   <el-container class="crm-login-view">
     <section class="login-view-left"></section>
-    <section class="login-view-right"></section>
+    <section class="login-view-right">
+      <el-button @click="onLogin">登录</el-button>
+    </section>
   </el-container>
 </template>
 
@@ -11,6 +13,7 @@
 .crm-login-view {
   display: flex;
   height: 100%;
+  min-height: 600px;
   padding: 20px;
   border-radius: 24px;
   overflow: hidden;
@@ -20,7 +23,7 @@
   }
 
   .login-view-left {
-    min-width: 400px;
+    min-width: 460px;
     border-radius: 24px 0 0 24px;
     background: #3f8cff;
   }
