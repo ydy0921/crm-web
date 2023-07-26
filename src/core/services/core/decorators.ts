@@ -1,29 +1,20 @@
-const instantiatedServes: any[] = [];
-
+import { ServiceFactory } from "./factory";
 /**
- * 属性装饰器
+ * 1. 属性装饰器
  * @param target 静态属性是类的构造函数，实例的属性是类的原型对象
  * @param property 属性名称
+ * 2. 用法
+ * 在需要使用的组件class中，引用待使用service类，并通过该装饰器注入
+ * @AutowiredService(UserService)
+ * userService:any
  */
-// (property) name:class = new property()
-export function AutowiredService(Type?: Function) {
+export function AutowiredService(Type: Function) {
   return (target: any, property: string) => {
     if (!Type) {
       console.error(`${target.constructor.name}中服务定义错误！`);
       return;
     }
-
-    let serveTemp: any = null;
-    serveTemp = instantiatedServes.find((serve) => {
-      return serve instanceof Type;
-    });
-
-    if (!serveTemp) {
-      // @ts-ignore
-      serveTemp = new Type();
-      instantiatedServes.push(serveTemp);
-    }
-
+    let serveTemp = ServiceFactory.createService(Type);
     const getter = () => {
       if (serveTemp) {
         return serveTemp;

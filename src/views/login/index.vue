@@ -3,6 +3,7 @@
     <section class="login-view-left"></section>
     <section class="login-view-right">
       <el-button @click="onLogin">登录</el-button>
+      <el-button @click="onLogin2">登录2</el-button>
     </section>
   </el-container>
 </template>

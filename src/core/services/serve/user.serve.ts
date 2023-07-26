@@ -15,11 +15,3 @@ export class UserService extends BaseService implements IUserService {
     return this.proxyHttp.get("getUserInfo", null, [id]);
   }
 }
-
-// UserService-api-constructor
-// type IUserServiceConstructor = new () => IUserService;
-// export function createUserServiceConstructor(
-//   ctor: IUserServiceConstructor
-// ): IUserService {
-//   return new ctor();
-// }

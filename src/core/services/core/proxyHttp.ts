@@ -3,14 +3,6 @@ import Axios, { AxiosResponse } from "axios";
 // 请求对象: 汇总模块内的各类方法
 export interface IProxyHttp {
   get<T, K>(api: string, params?: K, query?: string[]): Promise<T>;
-  // post(): Promise<any>;
-  // put(): Promise<any>;
-  // delete(): Promise<any>;
-  // form(): Promise<any>;
-  // // ...
-  // form(): Promise<any>;
-  // getFile(): Promise<any>;
-  // putOss(): Promise<any>;
   // ...
   initInterceptors(): void;
 }
@@ -23,8 +15,8 @@ export class ProxyHttp implements IProxyHttp {
     this.initInterceptors();
   }
 
+  //! 预先构造 Axios实例的全局配置
   initInterceptors(): void {
-    //! 预先构造 Axios实例的全局配置
     Axios.interceptors.request.eject(this.reqInterceptor);
     this.reqInterceptor = Axios.interceptors.request.use(
       (request: any) => {
@@ -59,14 +51,6 @@ export class ProxyHttp implements IProxyHttp {
     }
     return Axios.get(url, { params }).then<T>(this.fulfilled);
   }
-  // post(): Promise<any> {}
-  // put(): Promise<any> {}
-  // delete(): Promise<any> {}
-  // form(): Promise<any> {}
-  // // ...
-  // form(): Promise<any> {}
-  // getFile(): Promise<any> {}
-  // putOss(): Promise<any> {}
 }
 
 // ...
