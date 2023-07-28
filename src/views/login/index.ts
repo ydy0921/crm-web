@@ -2,16 +2,13 @@ import Vue from "vue";
 import Component from "vue-class-component";
 
 import { AutowiredService } from "@/core/services/core/decorators";
-import { UserService } from "@/core/services/serve/user.serve";
-import { ProjectService } from "@/core/services/serve/project.serve";
+import { UserService, ProjectService } from "@/core/services/serve/index.serve";
 
 @Component({
   name: "login-view",
   methods: {},
 })
 export default class LoginView extends Vue {
-  [x: string]: any;
-
   @AutowiredService(UserService)
   userService: any;
 

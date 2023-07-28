@@ -1,16 +1,16 @@
 import { IProxyHttp, ProxyHttp, createProxyHttp } from "./proxyHttp";
-
+import { IUtils, Utils, createUtils } from "./utils";
 //! Service构建相关--单一实例--工厂函数
 // 静态方法；不会被实例继承：直接通过类调用
 export abstract class ServiceFactory {
+  public static configAdapter: any;
   public static instantiatedServices: Object[] = []; //! 已经实例化的service模块
   public static proxyHttp: IProxyHttp; //! 实际发送请求的axios实例
-  public static configAdapter: any;
+  public static utils: IUtils;
 
   // 单例创建服务模块实例
   public static createService(Type: Function) {
     if (!Type) {
-      // throw new Error("服务定义错误");
       console.error("service class is none or error");
       return;
     }
@@ -39,8 +39,17 @@ export abstract class ServiceFactory {
   // 单例创建axios、config配置项
   public static createConfigAdapter() {
     if (!this.configAdapter) {
-    } else {
-      throw new Error("");
+      // this.configAdapter = createConfigAdapter();
+      this.configAdapter = { name: "111" };
     }
+    return this.configAdapter;
+  }
+
+  // 单例创建Utils工具类
+  public static createUtils() {
+    if (!this.utils) {
+      this.utils = createUtils(Utils);
+    }
+    return this.utils;
   }
 }
