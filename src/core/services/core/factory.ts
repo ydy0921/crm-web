@@ -1,5 +1,12 @@
 import { IProxyHttp, ProxyHttp, createProxyHttp } from "./proxyHttp";
 import { IUtils, Utils, createUtils } from "./utils";
+import {
+  IApiConfig,
+  IServerConfig,
+  ConfigAdapter,
+  createConfigAdapter,
+} from "./configAdapter";
+
 //! Service构建相关--单一实例--工厂函数
 // 静态方法；不会被实例继承：直接通过类调用
 export abstract class ServiceFactory {
@@ -15,7 +22,7 @@ export abstract class ServiceFactory {
       return;
     }
 
-    let serveTemp = null;
+    let serveTemp: any = null;
     serveTemp = this.instantiatedServices.find((serve) => {
       return serve instanceof Type;
     });
@@ -37,10 +44,20 @@ export abstract class ServiceFactory {
   }
 
   // 单例创建axios、config配置项
-  public static createConfigAdapter() {
+  public static createConfigAdapter(
+    apiConfig?: IApiConfig,
+    serverConfig?: IServerConfig
+  ) {
     if (!this.configAdapter) {
-      // this.configAdapter = createConfigAdapter();
-      this.configAdapter = { name: "111" };
+      if (!!apiConfig && !!serverConfig) {
+        this.configAdapter = createConfigAdapter(
+          ConfigAdapter,
+          apiConfig,
+          serverConfig
+        );
+      } else {
+        console.log("config init fail!");
+      }
     }
     return this.configAdapter;
   }
@@ -51,5 +68,15 @@ export abstract class ServiceFactory {
       this.utils = createUtils(Utils);
     }
     return this.utils;
+  }
+
+  //! 单例-初始化构建-请求配置项
+  public static createVuePlugin() {
+    return {
+      install: (vue: any, { apiConfig, serverConfig }: any) => {
+        const configAdapter = this.createConfigAdapter(apiConfig, serverConfig);
+        // ...向每个组件中注入依赖
+      },
+    };
   }
 }

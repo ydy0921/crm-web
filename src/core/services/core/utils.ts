@@ -8,7 +8,7 @@ export class Utils implements IUtils {
   private configAdapter: IConfigAdapter;
 
   constructor() {
-    this.configAdapter = ServiceFactory.configAdapter();
+    this.configAdapter = ServiceFactory.createConfigAdapter();
   }
 
   public dealPath(apiKey = "", method = "GET") {

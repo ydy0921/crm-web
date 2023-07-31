@@ -1,4 +1,4 @@
-export class configAdapter implements IConfigAdapter {
+export class ConfigAdapter implements IConfigAdapter {
   constructor(private apiConfig: any, serverConfig: any) {}
 }
 
@@ -7,7 +7,6 @@ type IConfigAdapterConstructor = new (
   apiConfig: IApiConfig,
   serverConfig: IServerConfig
 ) => IConfigAdapter;
-
 export function createConfigAdapter(
   ctor: IConfigAdapterConstructor,
   apiConfig: IApiConfig,

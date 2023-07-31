@@ -11,15 +11,15 @@
     "emitDecoratorMetadata": true, /* Enables experimental support for emitting type metadata for decorators. */
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true, /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
     "strictPropertyInitialization": false, // 关闭ts的检测初始化(a:boolean=false;)
     "sourceMap": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "types": [
       "webpack-env"
-    ],
+    ],  /* Type declaration files to be included in compilation. */
     "paths": {
       "@/*": [
         "src/*"
