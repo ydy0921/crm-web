@@ -1,9 +1,9 @@
 import { ServiceFactory } from "./factory";
 /**
- * 1. 属性装饰器
+ **1. 属性装饰器
  * @param target 静态属性是类的构造函数，实例的属性是类的原型对象
  * @param property 属性名称
- * 2. 用法
+ **2. 用法
  * 在需要使用的组件class中，引用待使用service类，并通过该装饰器注入
  * @AutowiredService(UserService)
  * userService:any
