@@ -2,7 +2,7 @@ import Axios, { AxiosResponse } from "axios";
 import { IConfigAdapter } from "./configAdapter";
 import { ServiceFactory } from "./factory";
 
-import { IUtils, Utils } from "./utils";
+import { IUtils } from "./utils";
 
 // 请求对象: 汇总模块内的各类方法
 export interface IProxyHttp {
@@ -47,14 +47,21 @@ export class ProxyHttp implements IProxyHttp {
   }
 
   private fulfilled = <T>(res: AxiosResponse) => {
-    const promise = new Promise<T>((resolve: any, reject: any) => {});
+    const promise = new Promise<T>((resolve: any, reject: any) => {
+      if (this.configAdapter.failCallback) {
+        this.configAdapter.failCallback(res.data, resolve, reject);
+      } else {
+        reject(res.data);
+      }
+    });
     return promise;
   };
 
-  // ...
+  //* GET请求套接
   get<T, K>(api: string, params: K, path?: string[]): Promise<T> {
-    let url = "http://sw-control-gateway-api.dev1.yaoyanshe.net/" + api;
-    this.utils.dealPath("", "");
+    const method = "GET";
+    let url = this.utils.dealPath(api, method);
+    // let url = "http://sw-control-gateway-api.dev1.yaoyanshe.net/" + api;
     if (path) {
       url += "/" + path.join("/");
     }
