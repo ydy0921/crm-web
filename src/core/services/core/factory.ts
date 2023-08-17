@@ -5,8 +5,8 @@ import {
   IServerConfig,
   ConfigAdapter,
   createConfigAdapter,
+  IConfigAdapter,
 } from "./configAdapter";
-
 //! Service构建相关--单一实例--工厂函数
 //* 静态方法；不会被实例继承：直接通过类调用
 export abstract class ServiceFactory {
@@ -14,7 +14,6 @@ export abstract class ServiceFactory {
   public static instantiatedServices: Object[] = []; //! 已经实例化的service模块
   public static proxyHttp: IProxyHttp; //! 实际发送请求的axios实例
   public static utils: IUtils;
-
   //* 单例创建服务模块实例
   public static createService(Type: Function) {
     if (!Type) {
@@ -47,7 +46,7 @@ export abstract class ServiceFactory {
   public static createConfigAdapter(
     apiConfig?: IApiConfig,
     serverConfig?: IServerConfig
-  ) {
+  ): IConfigAdapter {
     if (!this.configAdapter) {
       if (!!apiConfig && !!serverConfig) {
         this.configAdapter = createConfigAdapter(
@@ -63,7 +62,7 @@ export abstract class ServiceFactory {
   }
 
   //* 单例创建Utils工具类
-  public static createUtils() {
+  public static createUtils(): IUtils {
     if (!this.utils) {
       this.utils = createUtils(Utils);
     }

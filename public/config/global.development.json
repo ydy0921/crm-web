@@ -1,0 +1,33 @@
+{
+  "remote": "sw-control-gateway-api.dev1.yaoyanshe.net",
+  "otherRemotes": {
+    "adminCenter": "admin-center-api.dev1.yaoyanshe.net",
+    "maintaince": "uni-app-center-api.dev1.yaoyanshe.net",
+    "nvwa": "nvwa-svc.dev1.yaoyanshe.net"
+  },
+  "local": "180.167.88.250:13089",
+  "entrance": "http://miaoyi.dev1.yaoyanshe.net/login",
+  "otherEntrances": {
+    "trailLink": "portal.dev1.yaoyanshe.net",
+    "tdc": "tdc-web.dev1.yaoyanshe.net",
+    "userOperateLink": "uo.dev1.yaoyanshe.net",
+    "etmfLink": "etmf.dev1.yaoyanshe.net",
+    "im": "live.dev1.yaoyanshe.net",
+    "helpCenter": "help.dev1.yaoyanshe.net",
+    "clinicalResearchData": "clinical-research-data-web.dev1.yaoyanshe.net",
+    "subsidyReport": "pmcp-subsidy-report-web.dev1.yaoyanshe.net"
+  },
+  "appID": "xxx",
+  "protocol": "http:",
+  "publicPath": "/",
+  "assetsPath": "/",
+  "plugins": {
+    "im": {
+      "enable": true,
+      "longpolling": true
+    },
+    "lockscreen": {
+      "enable": true
+    }
+  }
+}

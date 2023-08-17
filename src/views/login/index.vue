@@ -1,5 +1,5 @@
 <template>
-  <el-container class="crm-login-view">
+  <el-container class="crm-login-view i-crm-login">
     <section class="login-view-left"></section>
     <section class="login-view-right">
       <el-button @click="onLogin">登录</el-button>

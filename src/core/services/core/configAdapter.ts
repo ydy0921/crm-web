@@ -1,3 +1,4 @@
+//* configAdapter是将可能需要的apiConfig、serviceConfig等配置节组合到一起的实例
 export class ConfigAdapter implements IConfigAdapter {
   serverConfig: IServerConfig; // 服务配置项引用
   env: Env;
@@ -5,8 +6,9 @@ export class ConfigAdapter implements IConfigAdapter {
   domain: string;
   otherDomain: { [key: string]: string };
   curSite: ISite;
+  localSite: string;
+  successCallback?: (res: any) => void;
   failCallback?: (res: any, resolve: any, reject: any) => void;
-
   private URL_TPL = "//{DOMAIN}{HOST_API}?appId=APPID&path=PATH&state=!STATE";
 
   constructor(private apiConfig: any, serverConfig: any) {
@@ -17,19 +19,34 @@ export class ConfigAdapter implements IConfigAdapter {
     this.dealConfig();
   }
 
+  //! 用来初始化配置文件的辅助方法
+  dealConfig() {
+    // this.curSite = !!this.serverConfig.sites
+    //   ? this.serverConfig.sites[this.env]
+    //   : { local: window.location.host, remote: window.location.host };
+
+    this.curSite = !!this.serverConfig.sites
+      ? this.serverConfig.sites
+      : {
+          local: window.location.host,
+          remote: window.location.host,
+        };
+    this.domain = this.curSite.remote;
+    this.otherDomain = this.curSite.otherRemotes || {};
+    this.localSite = `${location.protocol}//${this.curSite.local}${this.serverConfig.publicPath}`;
+    // this.entrance
+  }
+
+  // 整个系统重通过此方法获取实例化的属性
+  static getConfig() {
+    return;
+  }
+
   public getTargetApi(method: string, apiKey: string): string {
     if (this.apiConfig[method] && this.apiConfig[method][apiKey]) {
       return this.apiConfig[method][apiKey];
     }
-    return "";
-  }
-
-  dealConfig() {
-    this.curSite = !!this.serverConfig.sites
-      ? this.serverConfig.sites[this.env]
-      : { local: window.location.host, remote: window.location.host };
-    this.domain = this.curSite.remote;
-    this.otherDomain = this.curSite.otherRemotes || {};
+    return apiKey;
   }
 }
 
@@ -61,6 +78,7 @@ export const EnvKey = {
   [Env.UAT1]: Env.UAT1,
   [Env.MASTER]: Env.MASTER,
 };
+
 export interface ISite {
   local: string;
   remote: string;
@@ -82,9 +100,10 @@ export interface IHost {
 export declare interface IHosts {
   [key: string]: IHost;
 }
+//? 自定义请求模块相关配置项
 export interface IApiConfig {
-  [key: string]: any;
   hosts: IHosts;
+  modules?: any[];
   get?: { [key: string]: string };
   post?: { [key: string]: string };
   put?: { [key: string]: string };
@@ -92,23 +111,26 @@ export interface IApiConfig {
 }
 //? 自定义服务相关配置项
 export interface IServerConfig {
+  [key: string]: any;
   env: Env;
-  sites: ISites;
+  sites?: ISite;
   protocol: string;
+  successCallback?: <T>(res: T) => void;
   failCallback?: <T>(
     res: T,
     resolve: (value?: T | Promise<T> | undefined) => void,
     reject: Function
   ) => void;
 }
-//? 请求模块相关适配器项
+//? 请求模块相关适配器项 <==
 export interface IConfigAdapter {
+  [key: string]: any;
   env: Env;
   readonly hosts: IHosts;
   readonly domain: string;
   readonly otherDomain: { [key: string]: string };
   curSite: ISite;
-
+  successCallback?: <T>(res: T) => void;
   failCallback?: <T>(
     res: T,
     resolve: (value?: T | Promise<T> | undefined) => void,

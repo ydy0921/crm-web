@@ -1,11 +1,19 @@
-import { Env, EnvKey, IConfigAdapter, IHost, ISites } from "./configAdapter";
+import { Global } from "@/utils/global";
+import {
+  Env,
+  EnvKey,
+  IConfigAdapter,
+  IHost,
+  ISite,
+  ISites,
+} from "./configAdapter";
 import { ServiceFactory } from "./factory";
 
 export interface IUtils {
   dealPath(apiKey: string, method: string): string;
 }
 
-declare var SITE_INFO: string;
+// declare var SITE_INFO: string;
 
 export class Utils implements IUtils {
   private configAdapter: IConfigAdapter;
@@ -23,21 +31,23 @@ export class Utils implements IUtils {
     }
 
     if (api.indexOf(":") !== -1 && api.split(":").length === 2) {
+      //* 协议//域名|主机|api地址
       url = "{PROTOCOL}//{DOMAIN}{HOST}{API}";
       const path = api.split(":");
       path[0] = this.trim(path[0]);
       path[1] = this.trim(path[1]);
       const host: IHost = this.configAdapter.hosts[path[0]];
-      // const domain =
-      //   host && host.domain
-      //     ? this.configAdapter.otherDomain[host.domain]
-      //     : this.configAdapter.domain;
+      const domain =
+        host && host.domain
+          ? this.configAdapter.otherDomain[host.domain]
+          : this.configAdapter.domain;
+      debugger;
       url = url
         .replace(
           /\{PROTOCOL}/,
           this.configAdapter.curSite.protocol || location.protocol
         )
-        // .replace(/\{DOMAIN}/, domain)
+        .replace(/\{DOMAIN}/, domain)
         .replace(/\{HOST}/, host.dir)
         .replace(/\{API}/, path[1]);
     } else {
@@ -50,14 +60,15 @@ export class Utils implements IUtils {
     return str.replace(/(^\s*)|(\s*$)/g, "");
   }
 
-  static getSiteInfo(): ISites {
-    const siteInfo: any = SITE_INFO;
-    return Object.keys(EnvKey).reduce((results: ISites, envKey: any) => {
-      if (!results[Env[envKey]]) {
-        results[envKey] = siteInfo[Env[envKey]];
-      }
-      return results;
-    }, {});
+  static getSiteInfo(): ISite {
+    const siteInfo: any = Global.SITE_INFO;
+    // return Object.keys(EnvKey).reduce((results: ISites, envKey: any) => {
+    //   if (!results[Env[envKey]]) {
+    //     results[envKey] = siteInfo[Env[envKey]];
+    //   }
+    //   return results;
+    // }, {});
+    return siteInfo;
   }
 }
 

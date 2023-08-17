@@ -1,0 +1,25 @@
+$system-image-path: "../assets/images/";
+
+// 样式生成：背景图
+@mixin c-create-icon($className, $rName, $path: $system-image-path) {
+  .i-crm-#{$className} {
+    background: url($path + $rName) no-repeat center;
+    background-size: 100%;
+    &:not(div) {
+      display: inline-block;
+    }
+  }
+}
+
+@mixin c-state-icons($className1, $className2, $className3: $className2) {
+  .i-crm-icon {
+    &:hover .i-crm-#{$className1} {
+      @extend .i-crm-#{$className2};
+    }
+    &:active .i-crm-#{$className1} {
+      @extend .i-crm-#{$className3};
+    }
+  }
+}
+
+@include c-create-icon("login", "login-bg.jpg");
